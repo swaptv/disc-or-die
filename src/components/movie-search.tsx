@@ -11,7 +11,15 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
 }) {
   const [state, setState] = useState<SearchState>({ status: "idle" });
   const pending = useRef<AbortController | null>(null);
+  const resultsRef = useRef<HTMLUListElement | null>(null);
   useEffect(() => () => pending.current?.abort(), []);
+  useEffect(() => {
+    if (state.status !== "ready") return;
+    const frame = window.requestAnimationFrame(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [state]);
 
   function cancel() { pending.current?.abort(); pending.current = null; }
   async function search() {
@@ -46,7 +54,7 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
       {state.status === "error" && <p className="search-message">{state.message}</p>}
       {state.status === "ready" && <p className="search-message">{state.movies.length ? `${state.movies.length}件の候補から作品を選んでください。` : "作品が見つかりませんでした。原題で検索するか、手入力で続けてください。"}</p>}
     </div>
-    {state.status === "ready" && state.movies.length > 0 && <ul className="movie-matches" aria-label="作品の検索候補">{state.movies.map(movie => <li key={movie.id}>
+    {state.status === "ready" && state.movies.length > 0 && <ul ref={resultsRef} className="movie-matches" aria-label="作品の検索候補">{state.movies.map(movie => <li key={movie.id}>
       <button type="button" className="movie-match" onClick={() => { cancel(); onSelect(movie); setState({ status: "idle" }); }}>
         <span><strong>{movie.title}</strong><small>{movie.originalTitle}</small></span><span className="match-year">{movie.releaseYear ?? "公開年不明"}<span aria-hidden="true"> +</span></span>
       </button>

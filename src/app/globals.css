@@ -67,7 +67,7 @@ input { display: block; border: 1px solid #4c4e43; border-radius: 0; background:
 button:disabled { opacity: .55; cursor: wait; }
 .movie-search .fine-print { margin: 12px 0; }
 .search-message { color: var(--paper); font-size: 16px; line-height: 1.9; margin: 16px 0; }
-.movie-matches { list-style: none; padding: 0; margin: 15px 0 0; max-height: 360px; overflow-y: auto; border: 1px solid var(--line); }
+.movie-matches { scroll-margin-top: 24px; list-style: none; padding: 0; margin: 15px 0 0; max-height: 360px; overflow-y: auto; border: 1px solid var(--line); }
 .movie-matches li + li { border-top: 1px solid var(--line); }
 .movie-match { border: 0; background: #1a1c17; color: var(--paper); display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 20px; padding: 17px; text-align: left; min-height: 78px; }
 .movie-match:hover, .movie-match:focus-visible { background: #2b2920; }
