@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import type { Answers, Choice, MovieInfo } from "@/lib/types";
 import { questions, getQuestionPath } from "@/data/questions";
@@ -13,6 +13,9 @@ export default function DiscApp() {
   const [movie, setMovie] = useState<MovieInfo>({ title: "", price: null });
   const [answers, setAnswers] = useState<Answers>({});
   const [index, setIndex] = useState(0);
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [screen, index]);
   const path = getQuestionPath(answers);
   function answer(choice: Choice) {
     const id = path[index];
