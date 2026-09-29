@@ -1,0 +1,15 @@
+TMDB logo by Travis Bell. Used unchanged; displayed at a smaller size.
+
+Source copy:
+https://commons.wikimedia.org/wiki/File:Tmdb.new.logo.svg
+
+Original TMDB asset identified by that source:
+https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg
+
+License listed by the source: Creative Commons Attribution-ShareAlike 4.0 International.
+https://creativecommons.org/licenses/by-sa/4.0/
+
+TMDB branding and attribution guidance:
+https://www.themoviedb.org/about/logos-attribution
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
