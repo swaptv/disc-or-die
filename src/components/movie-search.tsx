@@ -37,7 +37,7 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
     <div className="search-input-row">
       <input id="movie-title" value={title} onChange={e => { cancel(); setState({ status: "idle" }); onChange(e.target.value); }} onKeyDown={e => {
         if (e.key === "Enter" && !e.nativeEvent.isComposing) { e.preventDefault(); void search(); }
-      }} placeholder="例：Litan" required maxLength={200} autoFocus aria-describedby="movie-search-help" />
+      }} placeholder="例：ヴィデオドローム" required maxLength={200} autoFocus aria-describedby="movie-search-help" />
       <button className="secondary search-button" type="button" disabled={state.status === "loading"} onClick={() => void search()}>{state.status === "loading" ? "検索中…" : "作品を検索"}<span aria-hidden="true">↗</span></button>
     </div>
     <p className="fine-print" id="movie-search-help">日本語・原題で映画を検索できます。見つからない作品は、手入力のまま進められます。</p>
