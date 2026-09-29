@@ -91,4 +91,7 @@ button:disabled { opacity: .55; cursor: wait; }
 .provider-confirm { width: 100%; text-align: left; gap: 15px; font-size: 12px; padding: 15px; }
 .credits { border-top: 1px solid var(--line); padding-top: 23px; margin-top: 35px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; color: var(--muted); font-size: 10px; line-height: 1.8; }
 .credits .eyebrow { width: 100%; }.credits > p:last-child { width: 100%; }.tmdb-logo { width: 74px; height: auto; }
+.credits .creator-credit { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.creator-credit a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--paper); }
+.creator-credit a:hover { color: var(--red); }
 @media (max-width: 480px) { .search-input-row { flex-wrap: wrap; }.search-input-row input { flex-basis: 100%; }.search-button { width: 100%; min-height: 48px; }.provider-panel { padding: 17px; }.movie-match { gap: 12px; padding: 14px; } }
