@@ -108,7 +108,7 @@ export const english: Record<string, string> = {
   "TMDBで視聴先・条件を確認 ↗": "Check viewing options on TMDB ↗",
   "配信データ：": "Availability data: ",
   "情報取得：": "Retrieved: ",
-  "最大1時間のキャッシュを使用しています。配信状況は変わる場合があります。": "Data may be cached for up to one hour. Availability can change.",
+  "配信状況は変わる場合があります。": "Availability can change.",
   "視聴できることを確認した：Aで回答": "I confirmed I can watch it: answer A",
   "データ提供・クレジット": "Data sources and credits",
   "制作者：": "Created by: ",

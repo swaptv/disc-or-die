@@ -40,7 +40,7 @@ export function WatchProviders({ movieId, onConfirm }: { movieId: number; onConf
         <p className="fine-print">{t("配信先が見つかりました。契約・追加料金・字幕や吹替などの条件を確認してください。")}</p>
       </> : <p className="fine-print">{t("日本の配信情報が登録されていません。配信がないとは限らないため、自分で確認してから下のA/Bで回答してください。")}</p>}
       <a className="provider-detail" href={state.data.link} target="_blank" rel="noopener noreferrer">{t("TMDBで視聴先・条件を確認 ↗")}</a>
-      <p className="provider-source">{t("配信データ：")}<a href="https://www.justwatch.com/jp" target="_blank" rel="noopener noreferrer">JustWatch</a> / <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a><br />{t("情報取得：")}{new Date(state.data.checkedAt).toLocaleString(locale === "en" ? "en-GB" : "ja-JP", { timeZone: "Asia/Tokyo", hour12: false })} JST<br />{t("最大1時間のキャッシュを使用しています。配信状況は変わる場合があります。")}</p>
+      <p className="provider-source">{t("配信データ：")}<a href="https://www.justwatch.com/jp" target="_blank" rel="noopener noreferrer">JustWatch</a> / <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a><br />{t("情報取得：")}{new Date(state.data.checkedAt).toLocaleString(locale === "en" ? "en-GB" : "ja-JP", { timeZone: "Asia/Tokyo", hour12: false })} JST<br />{t("配信状況は変わる場合があります。")}</p>
       {state.data.groups.length > 0 && <button type="button" className="secondary provider-confirm" onClick={onConfirm}>{t("視聴できることを確認した：Aで回答 ")}<span>↗</span></button>}
     </>}
   </aside>;
