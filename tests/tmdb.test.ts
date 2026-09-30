@@ -3,6 +3,16 @@ import assert from "node:assert/strict";
 import { handleTmdb } from "../src/lib/tmdb-api.ts";
 import { parseMovies, parseProviders } from "../src/lib/tmdb.ts";
 
+test("search requests English titles only for the supported English locale", async () => {
+  for (const lang of ["en", "ja", "invalid"]) {
+    const response = await handleTmdb(new Request(`http://localhost/?q=Videodrome&lang=${lang}`), "search", { token: "test", fetcher: async input => {
+      assert.equal(new URL(String(input)).searchParams.get("language"), lang === "en" ? "en-US" : "ja-JP");
+      return Response.json({ results: [] });
+    } });
+    assert.equal(response.status, 200);
+  }
+});
+
 test("movie posters preserve valid paths and discard missing or unsafe values", () => {
   for (const poster_path of ["/poster123.jpg", "/poster_123-test.png"]) {
     assert.equal(parseMovies({ results: [{ id: 1, title: "Film", poster_path }] })[0].posterPath, poster_path);

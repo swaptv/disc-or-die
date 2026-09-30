@@ -27,7 +27,7 @@ export async function handleTmdb(request: Request, operation: "search" | "provid
   if (!token?.trim()) return failure("NOT_CONFIGURED", 503);
   const url = new URL(operation === "search" ? "https://api.themoviedb.org/3/search/movie" : `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`);
   if (operation === "search") {
-    url.search = new URLSearchParams({ query, language: "ja-JP", include_adult: "false", page: "1" }).toString();
+    url.search = new URLSearchParams({ query, language: params.get("lang") === "en" ? "en-US" : "ja-JP", include_adult: "false", page: "1" }).toString();
   }
   try {
     const response = await fetcher(url, {

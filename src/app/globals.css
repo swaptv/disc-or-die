@@ -20,6 +20,15 @@ button, a { transition: background .15s, color .15s, border-color .15s; }
 .brand-dot { font-size: 10px; vertical-align: top; margin-left: 5px; }
 .header-right, .mobile-edition { font-family: monospace; font-size: 10px; letter-spacing: 1.3px; display: flex; align-items: center; gap: 10px; }
 .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); } .mobile-edition { display: none; }
+.language-switch { display: flex; gap: 4px; flex-shrink: 0; }
+.language-switch button { border: 1px solid var(--line); background: transparent; color: var(--muted); padding: 8px 10px; min-height: 44px; font-size: 12px; }
+.language-switch button[aria-pressed="true"] { color: var(--paper); border-color: var(--red); }
+.language-switch button:hover { color: var(--paper); background: #292b23; }
+.share-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 36px; }
+html[lang="en"] .metric-label > span:first-child { min-width: 0; }
+html[lang="en"] .metric-label small { display: block; margin-left: 0; }
+html[lang="en"] .metric-label > span:last-child { flex-shrink: 0; text-align: right; }
+@media (max-width: 1050px) { .header-right { display: none; } }
 main { flex: 1; }
 .hero { padding-top: 34px; }
 .hero-kicker { display: flex; justify-content: space-between; gap: 20px; align-items: center; }

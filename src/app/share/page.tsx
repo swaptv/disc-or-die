@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import type { ResultId } from "@/lib/types";
-import { Credits } from "@/components/credits";
+import { LanguageProvider } from "@/components/language-provider";
+import { ShareView } from "@/components/share-view";
+import { requestLocale } from "@/lib/locale-server";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 type ShareProps = { searchParams: SearchParams };
@@ -16,20 +16,23 @@ function readShare(params: Record<string, string | string[] | undefined>) {
 }
 
 export async function generateMetadata({ searchParams }: ShareProps): Promise<Metadata> {
-  const { title, result, poster } = readShare(await searchParams);
+  const params = await searchParams;
+  const locale = await requestLocale(params.lang);
+  const { title, result, poster } = readShare(params);
   if (!title || !result) return { title: "DISC OR DIE" };
   const heading = `${title} — ${result} | DISC OR DIE`;
-  const description = `${title}のディスク購入診断結果：${result}`;
+  const description = locale === "en" ? `Disc purchase verdict for ${title}: ${result}` : `${title}のディスク購入診断結果：${result}`;
+  const alt = locale === "en" ? `${title} poster` : `${title}のポスター`;
   const image = poster ? `https://image.tmdb.org/t/p/w500${poster}` : undefined;
   return {
     title: heading,
     description,
-    openGraph: { title: heading, description, ...(image ? { images: [{ url: image, alt: `${title}のポスター` }] } : {}) },
-    twitter: { card: "summary", title: heading, description, ...(image ? { images: [{ url: image, alt: `${title}のポスター` }] } : {}) },
+    openGraph: { title: heading, description, ...(image ? { images: [{ url: image, alt }] } : {}) },
+    twitter: { card: "summary", title: heading, description, ...(image ? { images: [{ url: image, alt }] } : {}) },
   };
 }
 
 export default async function SharePage({ searchParams }: ShareProps) {
-  const { title, result, poster } = readShare(await searchParams);
-  return <main className="share-page"><Link href="/" className="wordmark">DISC<span className="red"> / </span>OR DIE<span className="brand-dot">®</span></Link><div className="share-content">{title && result ? <><p className="eyebrow">THE VERDICT IS IN</p><h1 className={`share-verdict ${result === "BUY IT" ? "red" : ""}`}>{result}<span className="red">.</span></h1><div className="share-movie">{poster && <Image src={`https://image.tmdb.org/t/p/w500${poster}`} alt={`${title}のポスター`} width={200} height={300} unoptimized />}<h2>{title}</h2></div></> : <h1 className="share-verdict">DISC OR DIE.</h1>}<Link href="/" className="primary">自分も診断する <span>↗</span></Link></div><Credits /></main>;
+  const params = await searchParams;
+  return <LanguageProvider initialLocale={await requestLocale(params.lang)}><ShareView {...readShare(params)} /></LanguageProvider>;
 }
