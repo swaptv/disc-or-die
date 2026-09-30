@@ -17,5 +17,5 @@ export interface WatchAvailability {
 }
 export type TmdbErrorCode = "NOT_CONFIGURED" | "INVALID_INPUT" | "UNAVAILABLE" | "RATE_LIMITED" | "TIMEOUT";
 export type ApiResponse<T> = { ok: true; data: T } | { ok: false; error: { code: TmdbErrorCode; message: string } };
-export interface Question { id: QuestionId; label: string; title: string; choices: [string, string]; note?: string; action?: "amazon"; showPrice?: boolean }
+export interface Question { id: QuestionId; title: string; choices: [string, string]; note?: string; action?: "amazon"; showPrice?: boolean }
 export interface Decision { result: ResultId; metrics: Metrics; reason: string }

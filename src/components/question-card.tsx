@@ -2,8 +2,9 @@ import type { Choice, MovieInfo, Question } from "@/lib/types";
 import { amazonSearchUrl, formatPrice } from "@/lib/links";
 import { Progress } from "./progress";
 import { WatchProviders } from "./watch-providers";
+import { MoviePoster } from "./movie-poster";
 export function QuestionCard({ question, movie, index, total, selected, onAnswer, onBack }: { question: Question; movie: MovieInfo; index: number; total: number; selected?: Choice; onAnswer: (choice: Choice) => void; onBack: () => void }) {
-  return <section className="flow-panel question-panel"><Progress current={index + 1} total={total} /><p className="eyebrow">{question.label}</p><p className="movie-caption">NOW CONSIDERING <span>{movie.title}</span></p><h1 className="question-title" tabIndex={-1} autoFocus>{question.title}</h1>
+  return <section className="flow-panel question-panel"><Progress current={index + 1} total={total} /><div className="question-movie">{movie.tmdb?.posterPath && <MoviePoster key={movie.tmdb.posterPath} path={movie.tmdb.posterPath} title={movie.title} className="question-poster" />}<p className="question-movie-title">{movie.title}</p></div><h1 className="question-title" tabIndex={-1} autoFocus>{question.title}</h1>
     {question.showPrice && movie.price !== null && <p className="price-callout">購入予定価格：{formatPrice(movie.price)}</p>}
     {question.note && <p className="question-note">{question.note}</p>}
     {question.id === "availability" && movie.tmdb && <WatchProviders key={movie.tmdb.id} movieId={movie.tmdb.id} onConfirm={() => onAnswer("A")} />}
