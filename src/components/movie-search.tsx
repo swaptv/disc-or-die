@@ -37,6 +37,11 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
       if (controller.signal.aborted || pending.current !== controller) return;
       if (!body.ok) setState({ status: "error", message: body.error.message });
       else if (!response.ok) throw new Error("Search failed");
+      else if (body.data.length === 1) {
+        cancel();
+        onSelect(body.data[0]);
+        setState({ status: "idle" });
+      }
       else setState({ status: "ready", movies: body.data });
     } catch {
       if (!controller.signal.aborted && pending.current === controller) setState({ status: "error", message: "検索に接続できませんでした。再試行するか、入力したタイトルで診断を続けてください。" });
