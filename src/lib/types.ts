@@ -1,5 +1,5 @@
 export type Choice = "A" | "B";
-export type QuestionId = "seen" | "rewatch" | "interest" | "availability" | "stock" | "desire" | "price";
+export type QuestionId = "seen" | "rewatch" | "interest" | "favorite" | "availability" | "stock" | "desire" | "price";
 export type Answers = Partial<Record<QuestionId, Choice>>;
 export type ResultId = "BUY IT" | "WAIT" | "WATCH FIRST" | "PASS";
 export type Metric = "LOVE" | "FOMO" | "RARITY" | "VALUE";

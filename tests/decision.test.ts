@@ -4,9 +4,9 @@ import { evaluate } from "../src/lib/decision.ts";
 import { getQuestionPath } from "../src/data/questions.ts";
 import type { Answers, Choice } from "../src/lib/types.ts";
 
-test("all 64 answer paths produce bounded metrics and obey priority rules", () => {
-  for (let mask = 0; mask < 64; mask++) {
-    const choices: Choice[] = Array.from({ length: 6 }, (_, i) => mask & (1 << i) ? "A" : "B");
+test("all 128 answer paths produce bounded metrics and obey priority rules", () => {
+  for (let mask = 0; mask < 128; mask++) {
+    const choices: Choice[] = Array.from({ length: 7 }, (_, i) => mask & (1 << i) ? "A" : "B");
     const answers: Answers = { seen: choices[0] };
     getQuestionPath(answers).forEach((id, i) => { answers[id] = choices[i]; });
     const d = evaluate(answers);
@@ -20,15 +20,27 @@ test("all 64 answer paths produce bounded metrics and obey priority rules", () =
   }
 });
 test("incomplete answers cannot produce a verdict", () => { assert.throws(() => evaluate({})); });
+test("favorite creators add support without penalizing a neutral answer", () => {
+  const answers: Answers = { seen: "B", interest: "A", favorite: "B", availability: "A", stock: "A", desire: "A", price: "A" };
+  const neutral = evaluate(answers);
+  const favorite = evaluate({ ...answers, favorite: "A" });
+  assert.equal(neutral.metrics.LOVE, 75);
+  assert.equal(favorite.metrics.LOVE, 85);
+  assert.equal(neutral.result, "BUY IT");
+  assert.equal(favorite.result, "BUY IT");
+  const incomplete = { ...answers };
+  delete incomplete.favorite;
+  assert.throws(() => evaluate(incomplete));
+});
 test("repeated viewing raises love and expensive discs still wait", () => {
-  const answers: Answers = { seen: "A", rewatch: "A", availability: "A", stock: "A", desire: "A", price: "B" };
+  const answers: Answers = { seen: "A", rewatch: "A", favorite: "B", availability: "A", stock: "A", desire: "A", price: "B" };
   const once = evaluate(answers);
   const repeated = evaluate({ ...answers, rewatch: "B" });
   assert.ok(repeated.metrics.LOVE > once.metrics.LOVE);
   assert.equal(repeated.result, "WAIT");
-  assert.equal(repeated.metrics.LOVE, 95);
+  assert.equal(evaluate({ ...answers, rewatch: "B", favorite: "A" }).metrics.LOVE, 100);
 });
 test("inactive branch answers do not influence the verdict", () => {
-  const answers: Answers = { seen: "B", interest: "A", availability: "B", stock: "B", desire: "A", price: "A" };
+  const answers: Answers = { seen: "B", interest: "A", favorite: "B", availability: "B", stock: "B", desire: "A", price: "A" };
   assert.deepEqual(evaluate(answers), evaluate({ ...answers, rewatch: "B" }));
 });

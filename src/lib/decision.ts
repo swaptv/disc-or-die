@@ -11,7 +11,7 @@ export const rules: { id: string; result: ResultId; matches: (a: Answers) => boo
 export function evaluate(a: Answers): Decision {
   if (getQuestionPath(a).some(id => a[id] !== "A" && a[id] !== "B")) throw new Error("診断に必要な回答が不足しています。");
   const metrics: Metrics = {
-    LOVE: a.seen === "A" ? (a.rewatch === "A" ? s.love.onceMore : s.love.manyTimes) : (a.interest === "A" ? s.love.curious : s.love.someday),
+    LOVE: Math.min(100, (a.seen === "A" ? (a.rewatch === "A" ? s.love.onceMore : s.love.manyTimes) : (a.interest === "A" ? s.love.curious : s.love.someday)) + (a.favorite === "A" ? s.love.favoriteBonus : 0)),
     FOMO: a.desire === "A" ? s.fomo.independentDesire : s.fomo.urgency,
     RARITY: a.stock === "A" ? s.rarity.available : s.rarity.scarce,
     VALUE: a.price === "A" ? s.value.fair : s.value.expensive,

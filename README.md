@@ -65,7 +65,7 @@ pnpm start
 - `src/lib/decision.ts`：順序付きの優先ルールとスコア判定
 - `src/lib/types.ts`：共有型
 - `src/lib/links.ts`：Amazon検索・共有URL・円表示
-- `tests/decision.test.ts`：全64通りの回答経路と優先判定の確認
+- `tests/decision.test.ts`：全128通りの回答経路と優先判定の確認
 
 質問の追加はQuestionId型、質問データ、getQuestionPathを変更します。表示数はパスの長さから決まります。Q1を変更するとQ2の両分岐の回答を消去します。指標は回答に基づく目安で、実在庫・市場価格を示すものではありません。
 
