@@ -5,7 +5,7 @@ export type ResultId = "BUY IT" | "WAIT" | "WATCH FIRST" | "PASS";
 export type Metric = "LOVE" | "FOMO" | "RARITY" | "VALUE";
 export type Metrics = Record<Metric, number>;
 export interface MovieInfo { title: string; price: number | null; tmdb?: MovieMatch }
-export interface MovieMatch { id: number; title: string; originalTitle: string; releaseYear: string | null }
+export interface MovieMatch { id: number; title: string; originalTitle: string; releaseYear: string | null; posterPath?: string | null }
 export type ProviderKind = "flatrate" | "free" | "ads" | "rent" | "buy";
 export interface WatchProvider { id: number; name: string }
 export interface WatchAvailability {

@@ -17,6 +17,7 @@ export function parseMovies(value: unknown): MovieMatch[] {
       title: movie.title,
       originalTitle: typeof movie.original_title === "string" ? movie.original_title : movie.title,
       releaseYear: typeof movie.release_date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(movie.release_date) ? movie.release_date.slice(0, 4) : null,
+      posterPath: typeof movie.poster_path === "string" && /^\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(movie.poster_path) ? movie.poster_path : null,
     }];
   }).slice(0, 20);
 }

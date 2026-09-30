@@ -96,3 +96,7 @@ button:disabled { opacity: .55; cursor: wait; }
 .creator-credit a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--paper); }
 .creator-credit a:hover { color: var(--red); }
 @media (max-width: 480px) { .search-input-row { flex-wrap: wrap; }.search-input-row input { flex-basis: 100%; }.search-button { width: 100%; min-height: 48px; }.provider-panel { padding: 17px; }.movie-match { gap: 12px; padding: 14px; } }
+
+.result-film { display: flex; align-items: flex-start; gap: 20px; }
+.result-film-details { min-width: 0; }
+.result-poster { width: clamp(90px, 12vw, 140px); height: auto; flex-shrink: 0; border: 1px solid var(--line); }

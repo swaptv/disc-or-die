@@ -3,6 +3,15 @@ import assert from "node:assert/strict";
 import { handleTmdb } from "../src/lib/tmdb-api.ts";
 import { parseMovies, parseProviders } from "../src/lib/tmdb.ts";
 
+test("movie posters preserve valid paths and discard missing or unsafe values", () => {
+  for (const poster_path of ["/poster123.jpg", "/poster_123-test.png"]) {
+    assert.equal(parseMovies({ results: [{ id: 1, title: "Film", poster_path }] })[0].posterPath, poster_path);
+  }
+  for (const poster_path of [null, undefined, "", 123, "https://example.com/poster.jpg", "//example.com/poster.jpg", "/../poster.jpg", "/poster.svg", "/poster.jpg?redirect=1"]) {
+    assert.equal(parseMovies({ results: [{ id: 1, title: "Film", poster_path }] })[0].posterPath, null);
+  }
+});
+
 test("search uses encoded Japanese query, fixed endpoint and server Bearer token", async () => {
   const fetcher: typeof fetch = async (input, options) => {
     const url = new URL(String(input));
@@ -19,7 +28,7 @@ test("search uses encoded Japanese query, fixed endpoint and server Bearer token
   assert.equal(response.status, 200);
   assert.match(response.headers.get("Cache-Control")!, /s-maxage=300/);
   const body = await response.json();
-  assert.deepEqual(body.data, [{ id: 1, title: "怪談", originalTitle: "Kwaidan", releaseYear: "1964" }]);
+  assert.deepEqual(body.data, [{ id: 1, title: "怪談", originalTitle: "Kwaidan", releaseYear: "1964", posterPath: null }]);
   assert.ok(!JSON.stringify(body).includes("test-token"));
   assert.ok(!JSON.stringify(body).includes("upstream-only"));
 });
@@ -59,7 +68,7 @@ test("upstream failures are sanitized and not cached", async () => {
 });
 
 test("movie candidates retain original title, missing release dates and valid identifiers", () => {
-  assert.deepEqual(parseMovies({ results: [{ id: 3, title: "Film", release_date: "" }, { id: -1, title: "Invalid" }, { id: 4, title: "" }, null] }), [{ id: 3, title: "Film", originalTitle: "Film", releaseYear: null }]);
+  assert.deepEqual(parseMovies({ results: [{ id: 3, title: "Film", release_date: "" }, { id: -1, title: "Invalid" }, { id: 4, title: "" }, null] }), [{ id: 3, title: "Film", originalTitle: "Film", releaseYear: null, posterPath: null }]);
   assert.deepEqual(parseMovies({ results: [] }), []);
 });
 
