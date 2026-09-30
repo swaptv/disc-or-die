@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-http://localhost:3000 を開いてください。
+http://localhost:3000/disc-or-die を開いてください。
 
 ```sh
 pnpm lint
@@ -20,7 +20,34 @@ pnpm build
 pnpm start
 ```
 
+## 公開先のパス
+
+公開URLは `https://swaptv.tokyo/disc-or-die` を想定しています。`src/lib/base-path.ts` の `/disc-or-die` をNext.jsの `basePath` と画像・APIのURLに使用しています。変更した場合は再ビルドが必要です。
+
+既存サイトと別にこのアプリを動かす場合、ドメインを管理しているホスティング側で `/disc-or-die` と `/disc-or-die/*` をこのNext.jsサーバーへ転送してください。転送時には `/disc-or-die` を削除せず、API・画像・`_next` 配下も含めます。DNSだけではパス単位の振り分けはできません。
+
+映画検索・配信情報のAPIにはサーバー実行環境が必要です。HTMLファイルのアップロードだけでは動作しません。
+
 ## Vercel
+
+`swaptv.tokyo` が別のVercelプロジェクトに紐付いている場合、このアプリを別プロジェクトとしてデプロイし、**swaptv.tokyo本体側**の `vercel.json` の `rewrites` に次の設定を追加します。`YOUR-DISC-OR-DIE-PROJECT.vercel.app` は、このアプリの実際の本番ドメインに置き換えてください。既存の設定は保持し、全パスを対象にするルールより前に追加します。このアプリ側に転送ルールを置く必要はありません。
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/disc-or-die",
+      "destination": "https://YOUR-DISC-OR-DIE-PROJECT.vercel.app/disc-or-die"
+    },
+    {
+      "source": "/disc-or-die/:path*",
+      "destination": "https://YOUR-DISC-OR-DIE-PROJECT.vercel.app/disc-or-die/:path*"
+    }
+  ]
+}
+```
+
+まずアプリの本番ドメインの `/disc-or-die` で動作を確認し、次に本体側を再デプロイして公開URLで確認します。[Vercel公式の外部Rewrite説明](https://vercel.com/docs/routing/rewrites)も参照してください。
 
 このリポジトリをGitHubへpushし、Vercelの「Add New → Project」でimportします。Framework PresetはNext.js、Root Directoryはリポジトリ直下。TMDBを有効にする場合はSettings → Environment Variablesに`TMDB_READ_ACCESS_TOKEN`を登録し、対象環境を選択して再デプロイしてください。DBの設定は不要です。公開費用はVercelプランの利用条件・上限に依存します。
 

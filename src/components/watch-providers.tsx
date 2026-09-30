@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { BASE_PATH } from "@/lib/base-path";
 import type { ApiResponse, ProviderKind, WatchAvailability } from "@/lib/types";
 
 const labels: Record<ProviderKind, string> = { flatrate: "見放題", free: "無料", ads: "広告付き", rent: "レンタル", buy: "デジタル購入" };
@@ -11,7 +12,7 @@ export function WatchProviders({ movieId, onConfirm }: { movieId: number; onConf
     const controller = new AbortController();
     async function load() {
       try {
-        const response = await fetch(`/api/tmdb/providers?${new URLSearchParams({ movieId: String(movieId) })}`, { signal: controller.signal });
+        const response = await fetch(`${BASE_PATH}/api/tmdb/providers?${new URLSearchParams({ movieId: String(movieId) })}`, { signal: controller.signal });
         const body: ApiResponse<WatchAvailability> = await response.json();
         if (controller.signal.aborted) return;
         if (!body.ok) setState({ status: "error", message: body.error.message });

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { BASE_PATH } from "@/lib/base-path";
 import type { ApiResponse, MovieMatch } from "@/lib/types";
 
 type SearchState = { status: "idle" | "loading" } | { status: "ready"; movies: MovieMatch[] } | { status: "error"; message: string };
@@ -29,7 +30,7 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
     pending.current = controller;
     setState({ status: "loading" });
     try {
-      const response = await fetch(`/api/tmdb/search?${new URLSearchParams({ q: title.trim() })}`, { signal: controller.signal });
+      const response = await fetch(`${BASE_PATH}/api/tmdb/search?${new URLSearchParams({ q: title.trim() })}`, { signal: controller.signal });
       const body: ApiResponse<MovieMatch[]> = await response.json();
       if (controller.signal.aborted || pending.current !== controller) return;
       if (!body.ok) setState({ status: "error", message: body.error.message });
