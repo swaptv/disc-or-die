@@ -1,5 +1,5 @@
 export const scoring = {
-  love: { rewatch: 95, noRewatch: 15, curious: 75, someday: 35 },
+  love: { onceMore: 75, manyTimes: 95, curious: 75, someday: 35 },
   fomo: { independentDesire: 15, urgency: 85 },
   rarity: { available: 20, scarce: 90 },
   value: { fair: 85, expensive: 25 },

@@ -13,14 +13,21 @@ test("all 64 answer paths produce bounded metrics and obey priority rules", () =
     assert.ok(["BUY IT", "WAIT", "WATCH FIRST", "PASS"].includes(d.result));
     for (const value of Object.values(d.metrics)) assert.ok(value >= 0 && value <= 100);
     if (answers.seen === "B" && answers.availability === "A" && (answers.interest === "B" || answers.desire === "B")) assert.equal(d.result, "WATCH FIRST");
-    else if (answers.seen === "A" && answers.rewatch === "B" && (answers.desire === "B" || answers.price === "B")) assert.equal(d.result, "PASS");
-    else if (answers.desire === "A" && answers.price === "A" && ((answers.seen === "A" && answers.rewatch === "A") || (answers.seen === "B" && answers.interest === "A" && answers.availability === "B"))) assert.equal(d.result, "BUY IT");
+    else if (answers.desire === "A" && answers.price === "A" && ((answers.seen === "A" && answers.rewatch === "B") || (answers.seen === "B" && answers.interest === "A" && answers.availability === "B"))) assert.equal(d.result, "BUY IT");
     else if (answers.price === "B" && (d.metrics.LOVE >= 50 || answers.desire === "A")) assert.equal(d.result, "WAIT");
     else if (answers.stock === "A" && answers.desire === "B") assert.equal(d.result, "WAIT");
     if (answers.price === "B") assert.notEqual(d.result, "BUY IT");
   }
 });
 test("incomplete answers cannot produce a verdict", () => { assert.throws(() => evaluate({})); });
+test("repeated viewing raises love and expensive discs still wait", () => {
+  const answers: Answers = { seen: "A", rewatch: "A", availability: "A", stock: "A", desire: "A", price: "B" };
+  const once = evaluate(answers);
+  const repeated = evaluate({ ...answers, rewatch: "B" });
+  assert.ok(repeated.metrics.LOVE > once.metrics.LOVE);
+  assert.equal(repeated.result, "WAIT");
+  assert.equal(repeated.metrics.LOVE, 95);
+});
 test("inactive branch answers do not influence the verdict", () => {
   const answers: Answers = { seen: "B", interest: "A", availability: "B", stock: "B", desire: "A", price: "A" };
   assert.deepEqual(evaluate(answers), evaluate({ ...answers, rewatch: "B" }));
