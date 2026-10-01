@@ -1,6 +1,21 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { shareUrl } from "../src/lib/links.ts";
+import type { ResultId } from "../src/lib/types.ts";
+
+test("X share pairs each verdict with its Japanese phrase", () => {
+  const phrases: Record<ResultId, string> = {
+    "BUY IT": "棚に迎えろ。",
+    WAIT: "その時を待て。",
+    "WATCH FIRST": "まずは観ろ。",
+    PASS: "見送る勇気を。",
+  };
+
+  for (const [result, japanese] of Object.entries(phrases) as [ResultId, string][]) {
+    const intent = new URL(shareUrl({ title: "Film", price: null }, result, ["Copy"], "https://example.com/disc-or-die"));
+    assert.equal(intent.searchParams.get("text")?.split("\n")[0], `DISC OR DIE says: ${result} / ${japanese} 💀`);
+  }
+});
 
 test("shared links retain the selected language with and without a poster", () => {
   for (const locale of ["en", "ja"] as const) {
