@@ -124,3 +124,5 @@ button:disabled { opacity: .55; cursor: wait; }
 .share-movie h2 { min-width: 0; font-size: clamp(21px, 4vw, 34px); overflow-wrap: anywhere; }
 .share-content .primary { max-width: 300px; }
 @media (max-width: 760px) { .share-page > .wordmark { margin-bottom: 36px; }.share-movie { gap: 18px; }.share-movie img { width: 90px; } }
+
+.verdict-label-japanese { display: block; margin-top: 10px; font-family: Arial, "Noto Sans JP", sans-serif; font-size: 14px; letter-spacing: normal; line-height: 1.8; }
