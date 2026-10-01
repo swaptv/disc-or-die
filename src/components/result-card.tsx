@@ -8,7 +8,7 @@ import { MoviePoster } from "./movie-poster";
 export function MetricBars({ metrics }: { metrics: Metrics }) {
   const { t } = useLanguage();
   const labels = { LOVE: "作品への愛", FOMO: "買い逃す不安", RARITY: "入手の難しさ", VALUE: "価格への納得" };
-  return <div className="metrics">{(Object.keys(metrics) as (keyof Metrics)[]).map(name => <div className="metric" key={name}><div className="metric-label"><span>{name}<small>{t(labels[name])}</small></span><span>{metrics[name]}<small>/ 100</small></span></div><div className="metric-track" role="meter" aria-label={t(labels[name])} aria-valuemin={0} aria-valuemax={100} aria-valuenow={metrics[name]}><div style={{ width: `${metrics[name]}%` }} /></div></div>)}</div>;
+  return <div className="metrics">{(Object.keys(metrics) as (keyof Metrics)[]).map(name => <div className="metric" key={name} data-high={metrics[name] >= 80}><div className="metric-label"><span>{name}<small>{t(labels[name])}</small></span><span>{metrics[name]}<small>/ 100</small></span></div><div className="metric-track" role="meter" aria-label={t(labels[name])} aria-valuemin={0} aria-valuemax={100} aria-valuenow={metrics[name]}><div style={{ width: `${metrics[name]}%` }} /></div></div>)}</div>;
 }
 export function ResultCard({ decision, movie, onRestart, onBack }: { decision: Decision; movie: MovieInfo; onRestart: () => void; onBack: () => void }) {
   const { t, locale } = useLanguage();
