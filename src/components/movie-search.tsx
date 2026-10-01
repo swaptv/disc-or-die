@@ -15,6 +15,8 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
   const [state, setState] = useState<SearchState>({ status: "idle" });
   const pending = useRef<AbortController | null>(null);
   const resultsRef = useRef<HTMLUListElement | null>(null);
+  const selectedRef = useRef<HTMLDivElement | null>(null);
+  const scrollToSelected = useRef(false);
   useEffect(() => () => pending.current?.abort(), []);
   useEffect(() => {
     if (state.status !== "ready") return;
@@ -23,6 +25,14 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
     });
     return () => window.cancelAnimationFrame(frame);
   }, [state]);
+  useEffect(() => {
+    if (!selected || !scrollToSelected.current) return;
+    scrollToSelected.current = false;
+    const frame = window.requestAnimationFrame(() => {
+      selectedRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [selected]);
 
   function cancel() { pending.current?.abort(); pending.current = null; }
   async function search() {
@@ -39,6 +49,7 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
       else if (!response.ok) throw new Error("Search failed");
       else if (body.data.length === 1) {
         cancel();
+        scrollToSelected.current = true;
         onSelect(body.data[0]);
         setState({ status: "idle" });
       }
@@ -67,6 +78,6 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
         <span><strong>{movie.title}</strong><small>{movie.originalTitle}</small></span><span className="match-year">{movie.releaseYear ?? t("公開年不明")}<span aria-hidden="true"> +</span></span>
       </button>
     </li>)}</ul>}
-    {selected && <div className="selected-movie"><p className="eyebrow">SELECTED / TMDB</p><p><strong>{selected.title}</strong> <span>({selected.releaseYear ?? t("公開年不明")})</span></p><p className="fine-print">{selected.originalTitle}{t(" · 日本の配信情報をQ3で確認できます。")}</p><div className="selected-actions"><a href={`https://www.themoviedb.org/movie/${selected.id}`} target="_blank" rel="noopener noreferrer">{t("作品詳細 ↗")}</a><button type="button" onClick={() => { cancel(); setState({ status: "idle" }); onChange(title); }}>{t("選択を解除して手入力にする")}</button></div></div>}
+    {selected && <div ref={selectedRef} className="selected-movie"><p className="eyebrow">SELECTED / TMDB</p><p><strong>{selected.title}</strong> <span>({selected.releaseYear ?? t("公開年不明")})</span></p><p className="fine-print">{selected.originalTitle}{t(" · 日本の配信情報をQ3で確認できます。")}</p><div className="selected-actions"><a href={`https://www.themoviedb.org/movie/${selected.id}`} target="_blank" rel="noopener noreferrer">{t("作品詳細 ↗")}</a><button type="button" onClick={() => { cancel(); setState({ status: "idle" }); onChange(title); }}>{t("選択を解除して手入力にする")}</button></div></div>}
   </div>;
 }
