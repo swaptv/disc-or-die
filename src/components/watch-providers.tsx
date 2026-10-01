@@ -3,6 +3,7 @@ import { useLanguage } from "./language-provider";
 import { useEffect, useState } from "react";
 import { BASE_PATH } from "@/lib/base-path";
 import type { ApiResponse, ProviderKind, WatchAvailability } from "@/lib/types";
+import { trackAnalytics } from "@/lib/analytics";
 
 const labels: Record<ProviderKind, string> = { flatrate: "見放題", free: "無料", ads: "広告付き", rent: "レンタル", buy: "デジタル購入" };
 type State = { status: "loading" } | { status: "ready"; data: WatchAvailability } | { status: "error"; message: string };
@@ -41,7 +42,7 @@ export function WatchProviders({ movieId, onConfirm }: { movieId: number; onConf
       </> : <p className="fine-print">{t("日本の配信情報が登録されていません。配信がないとは限らないため、自分で確認してから下のA/Bで回答してください。")}</p>}
       <a className="provider-detail" href={state.data.link} target="_blank" rel="noopener noreferrer">{t("TMDBで視聴先・条件を確認 ↗")}</a>
       <p className="provider-source">{t("配信データ：")}<a href="https://www.justwatch.com/jp" target="_blank" rel="noopener noreferrer">JustWatch</a> / <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB</a><br />{t("情報取得：")}{new Date(state.data.checkedAt).toLocaleString(locale === "en" ? "en-GB" : "ja-JP", { timeZone: "Asia/Tokyo", hour12: false })} JST<br />{t("配信状況は変わる場合があります。")}</p>
-      {state.data.groups.length > 0 && <button type="button" className="secondary provider-confirm" onClick={onConfirm}>{t("視聴できることを確認した：Aで回答 ")}<span>↗</span></button>}
+      {state.data.groups.length > 0 && <button type="button" className="secondary provider-confirm" onClick={() => { trackAnalytics("provider_confirmed", { locale }); onConfirm(); }}>{t("視聴できることを確認した：Aで回答 ")}<span>↗</span></button>}
     </>}
   </aside>;
 }
