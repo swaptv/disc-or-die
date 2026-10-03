@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ResultId } from "@/lib/types";
+import type { Metric, Metrics, ResultId } from "@/lib/types";
 import { LanguageProvider } from "@/components/language-provider";
 import { ShareView } from "@/components/share-view";
 import { requestLocale } from "@/lib/locale-server";
@@ -7,12 +7,19 @@ import { requestLocale } from "@/lib/locale-server";
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 type ShareProps = { searchParams: SearchParams };
 const results: ResultId[] = ["BUY IT", "WAIT", "WATCH FIRST", "PASS"];
+const metricNames: Metric[] = ["LOVE", "FOMO", "RARITY", "VALUE"];
+
+function readMetrics(params: Record<string, string | string[] | undefined>): Metrics | null {
+  const entries = metricNames.map(name => [name, Number(params[name.toLowerCase()])] as const);
+  if (entries.some(([, value]) => !Number.isInteger(value) || value < 0 || value > 100)) return null;
+  return Object.fromEntries(entries) as Metrics;
+}
 
 function readShare(params: Record<string, string | string[] | undefined>) {
   const title = typeof params.title === "string" ? params.title.trim().slice(0, 200) : "";
   const result = typeof params.result === "string" && results.includes(params.result as ResultId) ? params.result as ResultId : null;
   const poster = typeof params.poster === "string" && /^\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(params.poster) ? params.poster : null;
-  return { title, result, poster };
+  return { title, result, poster, metrics: readMetrics(params) };
 }
 
 export async function generateMetadata({ searchParams }: ShareProps): Promise<Metadata> {

@@ -115,14 +115,17 @@ button:disabled { opacity: .55; cursor: wait; }
 .result-film-details { min-width: 0; }
 .result-poster { width: clamp(90px, 12vw, 140px); height: auto; flex-shrink: 0; border: 1px solid var(--line); }
 @media (max-width: 760px) { .question-panel { margin-top: 20px; }.question-panel .progress-block { margin-bottom: 20px; }.question-poster { width: 58px; }.question-movie-title { font-size: 16px; }.question-panel .question-title { margin-top: 18px; } }
-.share-page { max-width: 860px; min-height: 100svh; margin: 0 auto; padding: 32px 6%; }
+.share-page { max-width: 1050px; min-height: 100svh; margin: 0 auto; padding: 32px 6%; }
 .share-page > .wordmark { display: inline-block; margin-bottom: 65px; }
 .share-content { border-top: 1px solid var(--line); padding-top: 28px; }
 .share-verdict { font-family: Impact, "Arial Black", sans-serif; font-size: clamp(55px, 11vw, 112px); line-height: 1; margin: 25px 0; }
-.share-movie { display: flex; align-items: center; gap: 25px; margin: 30px 0 45px; }
+.share-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; padding: 28px 0 35px; }
+.share-result-grid-single { grid-template-columns: minmax(0, 560px); }
+.share-movie { display: flex; align-items: flex-start; gap: 25px; margin: 0 0 30px; }
 .share-movie img { width: 120px; height: auto; border: 1px solid var(--line); }
-.share-movie h2 { min-width: 0; font-size: clamp(21px, 4vw, 34px); overflow-wrap: anywhere; }
+.share-movie > div { min-width: 0; }
+.share-movie h2 { min-width: 0; margin: 10px 0 0; font-size: clamp(21px, 4vw, 34px); overflow-wrap: anywhere; }
 .share-content .primary { max-width: 300px; }
-@media (max-width: 760px) { .share-page > .wordmark { margin-bottom: 36px; }.share-movie { gap: 18px; }.share-movie img { width: 90px; } }
+@media (max-width: 760px) { .share-page > .wordmark { margin-bottom: 36px; }.share-result-grid { grid-template-columns: 1fr; gap: 35px; }.share-movie { gap: 18px; }.share-movie img { width: 90px; } }
 
 .verdict-label-japanese { display: block; margin-top: 10px; font-family: Arial, "Noto Sans JP", sans-serif; font-size: 14px; letter-spacing: normal; line-height: 1.8; }
