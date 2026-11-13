@@ -57,19 +57,6 @@ pnpm start
 
 このリポジトリをGitHubへpushし、Vercelの「Add New → Project」でimportします。Framework PresetはNext.js、Root Directoryはリポジトリ直下。TMDBを有効にする場合はSettings → Environment Variablesに`TMDB_READ_ACCESS_TOKEN`を登録し、対象環境を選択して再デプロイしてください。DBの設定は不要です。公開費用はVercelプランの利用条件・上限に依存します。
 
-## 利用状況の計測
-
-PostHogで診断の開始・質問表示・完了と、完了後のAmazon検索・X共有・再診断を匿名イベントとして計測できます。作品タイトル、価格、TMDB ID、個々の回答内容は送信しません。自動クリック収集、個人プロフィール、セッション録画、例外収集は無効です。ブラウザ内の識別子はタブのセッション中だけ保持します。
-
-PostHogのProject settingsでProject tokenとリージョンを確認し、ローカルでは`.env.local`、VercelではSettings → Environment Variablesに次を登録して再デプロイします。USリージョンは`https://us.i.posthog.com`、EUリージョンは`https://eu.i.posthog.com`です。未設定の場合は計測を行いません。
-
-```dotenv
-NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_your_project_token
-NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
-```
-
-すべての独自イベントには`app=disc-or-die`と`analytics_schema_version=1`を付与します。同じPostHogプロジェクトを別サイトと共用する場合は、`app`で絞り込んでください。診断ファネルは`app_opened` → `start_clicked` → `quiz_started` → `diagnosis_completed`で作成できます。質問別の離脱は`question_viewed`の`question_id`と`question_number`、診断結果の内訳は`diagnosis_completed`の`result`で確認できます。
-
 ## 構成と編集ポイント
 
 - `src/app/`：App Router、メタデータ、レスポンシブCSS
