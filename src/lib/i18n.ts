@@ -132,6 +132,7 @@ export const english: Record<string, string> = {
   "DISC OR DIEは楽天アフィリエイトに参加しています。": "DISC OR DIE participates in the Rakuten Affiliate program.",
   "30 FILM CHALLENGE の作品ページから": "From 30 FILM CHALLENGE",
   "← 作品ページへ": "← Back to the movie page",
+  "作品ページに戻る": "Back to the movie page",
   "価格を入れる": "Add a price",
   "作品を変更": "Change movie",
 };

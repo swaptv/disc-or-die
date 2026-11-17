@@ -149,3 +149,7 @@ button:disabled { opacity: .55; cursor: wait; }
 .shop-links-buttons a:hover { background: #292b23; }
 .shop-links-buttons a span { color: var(--muted); }
 .shop-links p { margin: 0; font-size: 13px; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }
+.back-to-30film { margin-top: 16px; min-height: 72px; }
+.back-to-30film-label { display: flex; flex-direction: column; gap: 4px; font-weight: 700; }
+.back-to-30film-label small { font-family: monospace; font-size: 10px; letter-spacing: 1.4px; font-weight: 400; color: var(--muted); }
+.back-to-30film > span:last-child { font-size: 24px; }
