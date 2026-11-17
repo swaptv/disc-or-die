@@ -42,7 +42,7 @@ export const english: Record<string, string> = {
   "作品が見つかりませんでした。原題で検索するか、手入力で続けてください。": "No movies found. Try the original title or continue with manual entry.",
   "作品の検索候補": "Movie search results",
   "公開年不明": "Year unknown",
-  " · 日本の配信情報をQ3で確認できます。": " · You can check streaming availability in Japan during the quiz.",
+  " · 日本の配信情報を質問5で確認できます。": " · You can check streaming availability in Japan during the quiz.",
   "作品詳細 ↗": "Movie details ↗",
   "選択を解除して手入力にする": "Clear selection and enter manually",
   "診断の進捗": "Quiz progress",
