@@ -108,3 +108,21 @@ test("missing Japanese data stays unknown; unsafe upstream links are discarded",
   }
   assert.throws(() => parseProviders({}, 123));
 });
+
+test("handed-over movie is fetched by id from TMDB; bad ids, mismatches and failures give null", async () => {
+  const { fetchMovie } = await import("../src/lib/tmdb-api.ts");
+  const fetcher: typeof fetch = async (input, options) => {
+    const url = new URL(String(input));
+    assert.equal(url.origin + url.pathname, "https://api.themoviedb.org/3/movie/603");
+    assert.equal(url.searchParams.get("language"), "en-US");
+    assert.equal(new Headers(options?.headers).get("Authorization"), "Bearer t");
+    return Response.json({ id: 603, title: "The Matrix", original_title: "The Matrix", release_date: "1999-03-30", poster_path: "/m.jpg" });
+  };
+  assert.deepEqual(await fetchMovie("603", "en", { token: "t", fetcher }), { id: 603, title: "The Matrix", originalTitle: "The Matrix", releaseYear: "1999", posterPath: "/m.jpg" });
+  const never: typeof fetch = async () => { throw new Error("must not fetch"); };
+  for (const id of ["", "0", "abc", "603x", "../603", "99999999999"]) assert.equal(await fetchMovie(id, "ja", { token: "t", fetcher: never }), null);
+  assert.equal(await fetchMovie("603", "ja", { token: "", fetcher: never }), null);
+  assert.equal(await fetchMovie("603", "ja", { token: "t", fetcher: async () => Response.json({ id: 604, title: "Other" }) }), null);
+  assert.equal(await fetchMovie("603", "ja", { token: "t", fetcher: async () => new Response("", { status: 404 }) }), null);
+  assert.equal(await fetchMovie("603", "ja", { token: "t", fetcher: async () => { throw new Error("down"); } }), null);
+});

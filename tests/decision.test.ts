@@ -13,7 +13,7 @@ test("all 256 answer paths produce bounded metrics and obey priority rules", () 
     assert.ok(["BUY IT", "WAIT", "WATCH FIRST", "PASS"].includes(d.result));
     for (const value of Object.values(d.metrics)) assert.ok(value >= 0 && value <= 100);
     if (answers.seen === "B" && answers.availability === "A" && (answers.interest === "B" || answers.desire === "B")) assert.equal(d.result, "WATCH FIRST");
-    else if (answers.stock === "A" && (answers.desire === "B" || answers.timing === "B")) assert.equal(d.result, "WAIT");
+    else if (answers.stock === "B" && (answers.desire === "B" || answers.timing === "B")) assert.equal(d.result, "WAIT");
     else if (answers.desire === "A" && answers.price === "A" && ((answers.seen === "A" && answers.rewatch === "B") || (answers.seen === "B" && answers.interest === "A" && answers.availability === "B"))) assert.equal(d.result, "BUY IT");
     else if (answers.price === "B" && (d.metrics.LOVE >= 50 || answers.desire === "A")) assert.equal(d.result, "WAIT");
     if (answers.price === "B") assert.notEqual(d.result, "BUY IT");
@@ -21,7 +21,7 @@ test("all 256 answer paths produce bounded metrics and obey priority rules", () 
 });
 test("incomplete answers cannot produce a verdict", () => { assert.throws(() => evaluate({})); });
 test("favorite creators add support without penalizing a neutral answer", () => {
-  const answers: Answers = { seen: "B", interest: "A", favorite: "B", timing: "A", availability: "A", stock: "A", desire: "A", price: "A" };
+  const answers: Answers = { seen: "B", interest: "A", favorite: "B", timing: "A", availability: "A", stock: "B", desire: "A", price: "A" };
   const neutral = evaluate(answers);
   const favorite = evaluate({ ...answers, favorite: "A" });
   assert.equal(neutral.metrics.LOVE, 85);
@@ -33,7 +33,7 @@ test("favorite creators add support without penalizing a neutral answer", () => 
   assert.throws(() => evaluate(incomplete));
 });
 test("repeated viewing raises love and expensive discs still wait", () => {
-  const answers: Answers = { seen: "A", rewatch: "A", favorite: "B", timing: "B", availability: "A", stock: "A", desire: "A", price: "B" };
+  const answers: Answers = { seen: "A", rewatch: "A", favorite: "B", timing: "B", availability: "A", stock: "B", desire: "A", price: "B" };
   const once = evaluate(answers);
   const repeated = evaluate({ ...answers, rewatch: "B" });
   assert.ok(repeated.metrics.LOVE > once.metrics.LOVE);
@@ -41,7 +41,7 @@ test("repeated viewing raises love and expensive discs still wait", () => {
   assert.equal(evaluate({ ...answers, rewatch: "B", favorite: "A" }).metrics.LOVE, 100);
 });
 test("a near-term viewing plan supports buying; no plan waits when stock is normal", () => {
-  const answers: Answers = { seen: "B", interest: "A", favorite: "B", timing: "A", availability: "A", stock: "A", desire: "A", price: "A" };
+  const answers: Answers = { seen: "B", interest: "A", favorite: "B", timing: "A", availability: "A", stock: "B", desire: "A", price: "A" };
   const soon = evaluate(answers);
   const noPlan = evaluate({ ...answers, timing: "B" });
   assert.equal(soon.metrics.LOVE, 85);
@@ -51,6 +51,6 @@ test("a near-term viewing plan supports buying; no plan waits when stock is norm
   assert.equal(noPlan.reason, "available-no-rush");
 });
 test("inactive branch answers do not influence the verdict", () => {
-  const answers: Answers = { seen: "B", interest: "A", favorite: "B", timing: "B", availability: "B", stock: "B", desire: "A", price: "A" };
+  const answers: Answers = { seen: "B", interest: "A", favorite: "B", timing: "B", availability: "B", stock: "A", desire: "A", price: "A" };
   assert.deepEqual(evaluate(answers), evaluate({ ...answers, rewatch: "B" }));
 });

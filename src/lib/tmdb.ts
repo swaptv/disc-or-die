@@ -5,21 +5,29 @@ function object(value: unknown): Record<string, unknown> {
 }
 const positiveId = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value > 0;
 
+function movieMatch(entry: unknown): MovieMatch | null {
+  const movie = object(entry);
+  if (!positiveId(movie.id) || typeof movie.title !== "string" || !movie.title.trim()) return null;
+  return {
+    id: movie.id,
+    title: movie.title,
+    originalTitle: typeof movie.original_title === "string" ? movie.original_title : movie.title,
+    releaseYear: typeof movie.release_date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(movie.release_date) ? movie.release_date.slice(0, 4) : null,
+    posterPath: typeof movie.poster_path === "string" && /^\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(movie.poster_path) ? movie.poster_path : null,
+  };
+}
+
 // Validate upstream JSON at the boundary; never forward the raw TMDB response.
 export function parseMovies(value: unknown): MovieMatch[] {
   const results = object(value).results;
   if (!Array.isArray(results)) throw new Error("Invalid movie response");
-  return results.flatMap((entry): MovieMatch[] => {
-    const movie = object(entry);
-    if (!positiveId(movie.id) || typeof movie.title !== "string" || !movie.title.trim()) return [];
-    return [{
-      id: movie.id,
-      title: movie.title,
-      originalTitle: typeof movie.original_title === "string" ? movie.original_title : movie.title,
-      releaseYear: typeof movie.release_date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(movie.release_date) ? movie.release_date.slice(0, 4) : null,
-      posterPath: typeof movie.poster_path === "string" && /^\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(movie.poster_path) ? movie.poster_path : null,
-    }];
-  }).slice(0, 20);
+  return results.flatMap(entry => movieMatch(entry) ?? []).slice(0, 20);
+}
+
+// One movie's details (/movie/:id). Null unless it is the requested id with a usable title.
+export function parseMovie(value: unknown, movieId: number): MovieMatch | null {
+  const movie = movieMatch(value);
+  return movie?.id === movieId ? movie : null;
 }
 
 export function parseProviders(value: unknown, movieId: number, now = new Date()): WatchAvailability {

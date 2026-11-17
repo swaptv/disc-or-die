@@ -7,7 +7,7 @@ export const questions: Record<QuestionId, Question> = {
   favorite: { id: "favorite", title: "好きな監督や出演者の作品？", choices: ["好きな監督・出演者の作品", "特に意識していない"] },
   timing: { id: "timing", title: "買ったらいつ観たい？", choices: ["近いうちに観たい", "今は予定がない"] },
   availability: { id: "availability", title: "Blu-ray以外で今観られる？", choices: ["配信・レンタルなどで観られる", "ディスク以外ではほぼ観られない"], note: "配信状況が分からない場合は、自分で確認してから答えてください。" },
-  stock: { id: "stock", title: "Amazonで現在の入手状況を確認してください。", choices: ["新品で普通に買える", "新品がない / 高騰している / 入手しづらい"], action: "amazon", note: "検索結果を確認して、あなたの目で判断してください。価格・在庫の自動取得は行いません。" },
+  stock: { id: "stock", title: "現在、廃盤になっている？", choices: ["はい、廃盤・品切れ・高騰している", "いいえ、新品で普通に買える"], action: "shop", note: "Amazonや楽天で検索して、新品が買えるか確かめてください。価格・在庫の自動取得は行いません。" },
   desire: { id: "desire", title: "もし、いつでも同じように買えると分かっていても欲しい？", choices: ["それでも欲しい", "それなら急いで買わない"] },
   price: { id: "price", title: "今の価格に納得している？", choices: ["納得している", "高いと感じる"], showPrice: true },
 };
