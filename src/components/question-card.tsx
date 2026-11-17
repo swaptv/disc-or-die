@@ -1,7 +1,7 @@
 "use client";
 import { useLanguage } from "./language-provider";
 import type { Choice, MovieInfo, Question } from "@/lib/types";
-import { amazonSearchUrl, formatPrice } from "@/lib/links";
+import { formatPrice } from "@/lib/links";
 import { Progress } from "./progress";
 import { WatchProviders } from "./watch-providers";
 import { MoviePoster } from "./movie-poster";
@@ -14,7 +14,7 @@ export function QuestionCard({ question, movie, shops, index, total, selected, o
     {question.note && <p className="question-note">{t(question.note)}</p>}
     {question.showPrice && <ShopLinks title={movie.title} shops={shops} hint="「{title}」のDVD・Blu-rayを別タブで検索します。" />}
     {question.id === "availability" && movie.tmdb && <WatchProviders key={movie.tmdb.id} movieId={movie.tmdb.id} onConfirm={() => onAnswer("A")} />}
-    {question.action === "amazon" && <a className="amazon-link" href={amazonSearchUrl(movie.title)} target="_blank" rel="noopener noreferrer">{t("Amazon.co.jpで検索 ")}<span>↗</span><small>{t("別タブで開きます")}</small></a>}
+    {question.action === "shop" && <ShopLinks title={movie.title} shops={shops} heading="stock" amazonFallback hint="「{title}」のDVD・Blu-rayを別タブで検索します。" />}
     <div className="answers">{question.choices.map((text, i) => { const choice: Choice = i === 0 ? "A" : "B"; return <button key={choice} className="answer" aria-pressed={selected === choice} onClick={() => onAnswer(choice)}><span className="answer-letter">{choice}</span><span>{t(text)}</span><span className="answer-arrow">↗</span></button>; })}</div>
     <button className="back" onClick={onBack}>← {index === 0 ? t("作品情報に戻る") : t("前の質問に戻る")}</button><p className="fine-print">{t("正解はありません。棚に正直に。")}</p></section>;
 }
