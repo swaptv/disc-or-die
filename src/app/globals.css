@@ -99,8 +99,9 @@ button:disabled { opacity: .55; cursor: wait; }
 .provider-panel h2 { font-weight: 700; font-size: 18px; margin: 10px 0 20px; }
 .provider-groups { display: grid; gap: 16px; }.provider-groups dt { color: var(--muted); font-size: 14px; margin-bottom: 8px; }.provider-groups dd { display: flex; flex-wrap: wrap; gap: 7px; }
 .provider-chip { background: #292d23; color: var(--paper); font-size: 16px; padding: 7px 10px; overflow-wrap: anywhere; max-width: 100%; }
+.provider-logo { display: block; width: 46px; height: 46px; border-radius: 10px; background: #292d23; object-fit: cover; }
 .provider-panel .fine-print { margin-bottom: 10px; }
-.provider-detail, .provider-retry { font-size: 16px; min-height: 44px; display: inline-flex; align-items: center; color: var(--paper); text-decoration: underline; text-underline-offset: 4px; }.provider-retry { background: none; border: 0; }
+.provider-retry { font-size: 16px; min-height: 44px; display: inline-flex; align-items: center; color: var(--paper); text-decoration: underline; text-underline-offset: 4px; }.provider-retry { background: none; border: 0; }
 .provider-source { color: var(--muted); font-size: 14px; line-height: 1.9; margin: 10px 0 20px; }.provider-source a, .credits a { text-decoration: underline; text-underline-offset: 3px; }
 .provider-confirm { width: 100%; text-align: left; gap: 15px; font-size: 16px; padding: 15px; }
 .credits { border-top: 1px solid var(--line); padding-top: 23px; margin-top: 35px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; color: var(--muted); font-size: 14px; line-height: 1.8; }

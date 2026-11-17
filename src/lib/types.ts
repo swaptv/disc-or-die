@@ -7,7 +7,7 @@ export type Metrics = Record<Metric, number>;
 export interface MovieInfo { title: string; price: number | null; tmdb?: MovieMatch }
 export interface MovieMatch { id: number; title: string; originalTitle: string; releaseYear: string | null; posterPath?: string | null }
 export type ProviderKind = "flatrate" | "free" | "ads" | "rent" | "buy";
-export interface WatchProvider { id: number; name: string }
+export interface WatchProvider { id: number; name: string; logoPath: string | null }
 export interface WatchAvailability {
   movieId: number;
   region: "JP";
