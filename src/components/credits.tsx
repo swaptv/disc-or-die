@@ -2,8 +2,9 @@
 import { useLanguage } from "./language-provider";
 import Image from "next/image";
 import { BASE_PATH } from "@/lib/base-path";
+import type { ShopConfig } from "@/lib/affiliate";
 
-export function Credits() {
+export function Credits({ shops }: { shops?: ShopConfig }) {
   const { t } = useLanguage();
   return <section className="credits" aria-label={t("データ提供・クレジット")}>
     <p className="creator-credit">{t("制作者：")}<a href="https://x.com/swaptv" target="_blank" rel="noopener noreferrer" aria-label={t("制作者 @swaptv のXプロフィール（別タブで開きます）")}>@swaptv <span aria-hidden="true">↗</span></a><span>on X</span></p>
@@ -13,5 +14,7 @@ export function Credits() {
     </a>
     <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
     <p>{t("配信情報提供：")}<a href="https://www.justwatch.com/jp" target="_blank" rel="noopener noreferrer">JustWatch</a>{t("（via TMDB） · ")}<a href={`${BASE_PATH}/tmdb-logo-license.txt`} target="_blank" rel="noopener noreferrer">Logo credits</a></p>
+    {shops?.amazonTag && <p>{t("Amazonのアソシエイトとして、DISC OR DIEは適格販売により収入を得ています。")}</p>}
+    {shops?.rakutenId && <p>{t("DISC OR DIEは楽天アフィリエイトに参加しています。")}</p>}
   </section>;
 }

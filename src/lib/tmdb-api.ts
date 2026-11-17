@@ -1,5 +1,5 @@
-import { parseMovies, parseProviders } from "./tmdb.ts";
-import type { ApiResponse, TmdbErrorCode } from "./types.ts";
+import { parseMovie, parseMovies, parseProviders } from "./tmdb.ts";
+import type { ApiResponse, MovieMatch, TmdbErrorCode } from "./types.ts";
 
 type Dependencies = { token?: string; fetcher?: typeof fetch };
 const messages: Record<TmdbErrorCode, string> = {
@@ -46,5 +46,27 @@ export async function handleTmdb(request: Request, operation: "search" | "provid
     });
   } catch (error) {
     return error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError") ? failure("TIMEOUT", 504) : failure("UNAVAILABLE", 502);
+  }
+}
+
+export const isMovieId = (raw: string) => /^[1-9]\d*$/.test(raw) && Number(raw) <= 2147483647;
+
+// A movie handed over by ID (e.g. ?tmdb=603 from 30 FILM CHALLENGE). Only the ID is trusted from the
+// link; title and poster always come from TMDB. Any failure returns null so the page falls back to the form.
+export async function fetchMovie(rawId: string, locale: "ja" | "en", { token, fetcher = fetch }: Dependencies): Promise<MovieMatch | null> {
+  if (!isMovieId(rawId) || !token?.trim()) return null;
+  const movieId = Number(rawId);
+  const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
+  url.search = new URLSearchParams({ language: locale === "en" ? "en-US" : "ja-JP" }).toString();
+  try {
+    const response = await fetcher(url, {
+      headers: { Authorization: `Bearer ${token.trim()}`, accept: "application/json" },
+      signal: AbortSignal.timeout(5000),
+      next: { revalidate: 3600 },
+      redirect: "error",
+    } as RequestInit);
+    return response.ok ? parseMovie(await response.json(), movieId) : null;
+  } catch {
+    return null;
   }
 }

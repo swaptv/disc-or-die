@@ -8,6 +8,18 @@
 
 `?lang=en` / `?lang=ja` で表示言語を指定できます（URL指定 → 保存済み設定 → ブラウザ設定の順）。X共有リンクにも言語を引き継ぎます。映画検索は表示言語に合わせたタイトルを取得しますが、配信地域は日本、購入先はAmazon.co.jp、通貨は日本円（JPY）、情報取得日時はJSTです。
 
+## 30 FILM CHALLENGEからの引き継ぎ
+
+`/disc-or-die?tmdb=<TMDBの作品ID>&from=30film` で開くと、その作品を入れた状態で質問1から始まります（30 FILM CHALLENGEの作品ページのカードから遷移）。URLから受け取るのはIDだけで、題名・公開年・ポスターはサーバーがTMDBの作品詳細（`/movie/:id`、表示言語のタイトル、1時間キャッシュ）から取り直します。`from=30film` のときは質問画面の上に「30 FILM CHALLENGE の作品ページから」と、作品ページ（`https://30film.swaptv.tokyo/movies/<ID>`）へ戻るリンクを出します。質問1の作品名の下に「価格を入れる」（価格が未入力のとき）「作品を変更」を出し、どちらも作品入力画面を開きます。IDが不正・TMDB未設定・取得失敗のときは作品入力画面から始めます。価格は空のまま始まるので、価格の質問は価格表示なしで出ます。
+
+## アフィリエイトリンク
+
+作品入力画面の価格欄の下と、最後の質問「今の価格に納得している？」に「今の価格を調べる」（「広告 / PR」の札）を出し、作品のDVD・Blu-ray検索を別タブで開きます（`rel="sponsored noopener"`）。作品入力画面では、TMDBで作品を選んだとき（または診断に使った題名のまま戻ったとき）だけ出します。
+
+- 楽天：楽天ブックスのDVD・Blu-ray検索（`https://books.rakuten.co.jp/search?sitem=題名&g=003`）を、楽天アフィリエイトのリンク（`https://hb.afl.rakuten.co.jp/ichiba/<アフィリエイトID>/_RTLink157309?pc=検索URL&link_type=text`）で包みます。アフィリエイトIDと計測ID（`_RTLink157309`）は `src/lib/affiliate.ts` に埋め込み。環境変数 `RAKUTEN_AFFILIATE_ID` があればIDをそちらに替え、空や形式違いなら楽天を出しません。
+- Amazon：環境変数 `AMAZON_TAG`（`xxxx-22`）があるときだけ、Amazon.co.jpのDVD・ブルーレイ検索（`k=題名&i=dvd&tag=ID`）を出します。質問6「Amazonで現在の入手状況を確認」のリンクはタグなしのままです。
+- 有効なリンクに応じて、クレジット欄に「Amazonのアソシエイトとして…」「楽天アフィリエイトに参加しています」を表示します。価格・在庫の自動取得はしません。
+
 ## ローカル起動
 
 Node.js 22.6以上（推奨24）とpnpmを使用します。
@@ -62,6 +74,7 @@ pnpm start
 - `src/app/`：App Router、メタデータ、レスポンシブCSS
 - `src/components/disc-app.tsx`：トップとクライアント画面遷移、分岐・戻る操作
 - `src/components/movie-form.tsx`：独立した作品入力
+- `src/components/shop-links.tsx`・`src/lib/affiliate.ts`：アフィリエイトリンク
 - `src/components/question-card.tsx`：1問表示、Amazon検索リンク
 - `src/components/progress.tsx`：プログレス
 - `src/components/result-card.tsx`：結果、指標バー、X共有

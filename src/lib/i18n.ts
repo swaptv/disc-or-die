@@ -121,6 +121,19 @@ export const english: Record<string, string> = {
   "映画情報を取得できませんでした。時間をおいて再試行するか、手動で確認してください。": "Could not retrieve movie information. Try again later or check manually.",
   "検索が混み合っています。少し待ってから再試行してください。": "Search is busy. Please wait a moment and try again.",
   "映画情報の取得に時間がかかっています。再試行するか、手動で確認してください。": "The movie lookup timed out. Retry or check manually.",
+  "楽天ブックス": "Rakuten Books",
+  "今の価格を調べる": "Check today's price",
+  "今の価格を調べる（広告）": "Check today's price (ads)",
+  "広告": "AD",
+  "{shop}で検索（広告・別タブで開きます）": "Search {shop} (ad, opens in a new tab)",
+  "「{title}」のDVD・Blu-rayを別タブで検索します。価格を見たら、上の欄に入れてください。": "Searches DVDs and Blu-rays of \"{title}\" in a new tab. Enter the price you find in the field above.",
+  "「{title}」のDVD・Blu-rayを別タブで検索します。": "Searches DVDs and Blu-rays of \"{title}\" in a new tab.",
+  "Amazonのアソシエイトとして、DISC OR DIEは適格販売により収入を得ています。": "As an Amazon Associate, DISC OR DIE earns from qualifying purchases.",
+  "DISC OR DIEは楽天アフィリエイトに参加しています。": "DISC OR DIE participates in the Rakuten Affiliate program.",
+  "30 FILM CHALLENGE の作品ページから": "From 30 FILM CHALLENGE",
+  "← 作品ページへ": "← Back to the movie page",
+  "価格を入れる": "Add a price",
+  "作品を変更": "Change movie",
 };
 export function translate(locale: Locale, text: string): string {
   if (locale === "ja") return text;

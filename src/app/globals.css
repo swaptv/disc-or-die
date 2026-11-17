@@ -129,3 +129,24 @@ button:disabled { opacity: .55; cursor: wait; }
 @media (max-width: 760px) { .share-page > .wordmark { margin-bottom: 36px; }.share-result-grid { grid-template-columns: 1fr; gap: 35px; }.share-movie { gap: 18px; }.share-movie img { width: 90px; } }
 
 .verdict-label-japanese { display: block; margin-top: 10px; font-family: Arial, "Noto Sans JP", sans-serif; font-size: 14px; letter-spacing: normal; line-height: 1.8; }
+
+/* Handoff from 30 FILM CHALLENGE (?tmdb=…&from=30film) */
+.handoff-strip { max-width: 660px; margin: 22px auto 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; padding: 6px 14px; border: 1px solid var(--line); background: #1a1c17; color: var(--muted); font-family: monospace; font-size: 11px; letter-spacing: 1.2px; }
+.handoff-strip a { font-family: Arial, "Noto Sans JP", sans-serif; letter-spacing: normal; font-size: 14px; min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; }
+.handoff-strip a:hover { color: var(--paper); }
+.question-movie-body { min-width: 0; }
+.question-movie-year { margin: 2px 0 0; font-family: monospace; font-size: 13px; color: var(--muted); }
+.question-movie-actions { display: flex; flex-wrap: wrap; gap: 0 18px; }
+.question-movie-actions button { background: none; border: 0; padding: 0; min-height: 44px; color: var(--muted); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.question-movie-actions button:hover { color: var(--paper); }
+
+/* "今の価格を調べる" affiliate links (movie form, price question) */
+.shop-links { margin: 16px 0 0; padding: 14px 16px; border: 1px solid var(--line); background: #161714; display: grid; gap: 10px; }
+.question-panel .shop-links { margin: 0 0 28px; }
+.shop-links-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 15px; font-weight: 700; }
+.ad-tag { font-family: monospace; font-size: 10px; font-weight: 400; letter-spacing: 1px; color: #a8a89f; border: 1px solid #45473b; padding: 1px 6px; white-space: nowrap; }
+.shop-links-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.shop-links-buttons a { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; padding: 0 14px; border: 1px solid #777b6b; font-size: 15px; }
+.shop-links-buttons a:hover { background: #292b23; }
+.shop-links-buttons a span { color: var(--muted); }
+.shop-links p { margin: 0; font-size: 13px; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }

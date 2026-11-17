@@ -3,17 +3,22 @@ import { useLanguage } from "./language-provider";
 import { useState } from "react";
 import type { MovieInfo, MovieMatch } from "@/lib/types";
 import { MovieSearch } from "./movie-search";
-export function MovieForm({ initial, onSubmit, onBack }: { initial: MovieInfo; onSubmit: (movie: MovieInfo) => void; onBack: () => void }) {
+import { ShopLinks } from "./shop-links";
+import type { ShopConfig } from "@/lib/affiliate";
+export function MovieForm({ initial, shops, onSubmit, onBack }: { initial: MovieInfo; shops: ShopConfig; onSubmit: (movie: MovieInfo) => void; onBack: () => void }) {
   const { t, locale } = useLanguage();
   const [title, setTitle] = useState(initial.title);
   const [price, setPrice] = useState(initial.price?.toString() ?? "");
   const [selected, setSelected] = useState<MovieMatch | undefined>(initial.tmdb);
   const [error, setError] = useState("");
+  // Shop links only once the movie is settled: picked from TMDB, or the title the quiz already used.
+  const shopTitle = selected?.title ?? (initial.title && title.trim() === initial.title ? initial.title : "");
   return <section className="flow-panel"><p className="eyebrow">BEFORE THE INTERROGATION</p><h1 className="section-title">WHAT’S ON<br />YOUR MIND<span className="red">?</span></h1><p className="intro">{t("その一本、まずは名前を聞かせてください。")}</p>
     <p className="fine-print">{t("配信情報・購入先は日本向けです。価格は日本円（JPY）で入力してください。")}</p>
     <form onSubmit={e => { e.preventDefault(); const amount = price === "" ? null : Number(price); if (!title.trim()) { setError("作品タイトルを入力してください。"); return; } if (amount !== null && (!Number.isSafeInteger(amount) || amount < 0)) { setError("価格は0以上の整数で入力してください。"); return; } setError(""); onSubmit({ title: title.trim(), price: amount, ...(selected ? { tmdb: selected } : {}) }); }}>
       <MovieSearch key={locale} title={title} selected={selected} onChange={value => { setTitle(value); setSelected(undefined); }} onSelect={value => { setTitle(value.title); setSelected(value); }} />
       <label htmlFor="movie-price">{t("購入予定価格 ")}<span className="field-tag">OPTIONAL / JPY</span></label><div className="price-input"><span>¥</span><input id="movie-price" type="number" min="0" step="1" max="999999999" inputMode="numeric" value={price} onChange={e => setPrice(e.target.value)} placeholder="3,800" /></div>
+      <ShopLinks title={shopTitle} shops={shops} hint="「{title}」のDVD・Blu-rayを別タブで検索します。価格を見たら、上の欄に入れてください。" />
       <p className="fine-print">{t("検索時は作品名をTMDBに送信します。価格と診断の回答は送信しません。")}</p>{error && <p role="alert" className="red">{t(error)}</p>}
       <button className="primary w-full" type="submit">{t("診断をはじめる ")}<span>↗</span></button><button type="button" className="back" onClick={onBack}>{t("← トップに戻る")}</button>
     </form></section>;
