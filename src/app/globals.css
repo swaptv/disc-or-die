@@ -91,7 +91,7 @@ button:disabled { opacity: .55; cursor: wait; }
 .match-year { font-family: monospace; font-size: 14px; white-space: nowrap; color: var(--muted); }
 .match-year > span { color: var(--red); margin-left: 8px; }
 .selected-movie { border: 1px solid #5c6350; border-left: 2px solid var(--red); background: #1c2018; padding: 20px; margin-top: 20px; overflow-wrap: anywhere; }
-.selected-movie > p:nth-child(2) { margin-top: 10px; font-size: 18px; }.selected-movie > p:nth-child(2) span { color: var(--muted); font-size: 14px; }
+.selected-movie > p:first-child { margin-top: 0; font-size: 18px; }.selected-movie > p:first-child span { color: var(--muted); font-size: 14px; }
 .selected-actions { display: flex; flex-wrap: wrap; gap: 10px 25px; align-items: center; }
 .selected-actions > * { font-size: 14px; min-height: 44px; display: inline-flex; align-items: center; background: none; border: 0; text-decoration: underline; text-underline-offset: 4px; }
 .selected-actions button { color: var(--muted); }

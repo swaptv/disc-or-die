@@ -36,7 +36,7 @@ export function WatchProviders({ movieId, onConfirm }: { movieId: number; onConf
     return () => controller.abort();
   }, [movieId, attempt]);
   return <aside className="provider-panel" aria-label={t("日本の配信情報")}>
-    <p className="eyebrow">WHERE TO WATCH / JP</p><h2>{t("日本の配信サービス")}</h2>
+    <h2>{t("日本の配信サービス")}</h2>
     <div role="status" aria-live="polite">
       {state.status === "loading" && <p className="fine-print">{t("配信情報を確認しています。分かっている場合は、そのまま下のA/Bで回答できます。")}</p>}
       {state.status === "error" && <p className="fine-print">{t(state.message)}</p>}

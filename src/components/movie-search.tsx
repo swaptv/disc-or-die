@@ -78,6 +78,6 @@ export function MovieSearch({ title, selected, onChange, onSelect }: {
         <span><strong>{movie.title}</strong><small>{movie.originalTitle}</small></span><span className="match-year">{movie.releaseYear ?? t("公開年不明")}<span aria-hidden="true"> +</span></span>
       </button>
     </li>)}</ul>}
-    {selected && <div ref={selectedRef} className="selected-movie"><p className="eyebrow">SELECTED / TMDB</p><p><strong>{selected.title}</strong> <span>({selected.releaseYear ?? t("公開年不明")})</span></p><p className="fine-print">{selected.originalTitle}{t(" · 日本の配信情報をQ3で確認できます。")}</p><div className="selected-actions"><a href={`https://www.themoviedb.org/movie/${selected.id}`} target="_blank" rel="noopener noreferrer">{t("作品詳細 ↗")}</a><button type="button" onClick={() => { cancel(); setState({ status: "idle" }); onChange(title); }}>{t("選択を解除して手入力にする")}</button></div></div>}
+    {selected && <div ref={selectedRef} className="selected-movie"><p><strong>{selected.title}</strong> <span>({selected.releaseYear ?? t("公開年不明")})</span></p><p className="fine-print">{selected.originalTitle}{t(" · 日本の配信情報をQ3で確認できます。")}</p><div className="selected-actions"><a href={`https://www.themoviedb.org/movie/${selected.id}`} target="_blank" rel="noopener noreferrer">{t("作品詳細 ↗")}</a><button type="button" onClick={() => { cancel(); setState({ status: "idle" }); onChange(title); }}>{t("選択を解除して手入力にする")}</button></div></div>}
   </div>;
 }
