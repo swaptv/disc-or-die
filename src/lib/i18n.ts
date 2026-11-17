@@ -84,7 +84,7 @@ export const english: Record<string, string> = {
   "配信状況が分からない場合は、自分で確認してから答えてください。": "If you are unsure about availability, check before answering.",
   "現在、廃盤になっている？": "Is it out of print right now?",
   "いいえ、新品で普通に買える": "No, new copies are easy to buy",
-  "廃盤・品切れ・高騰している": "Out of print, sold out, or overpriced",
+  "はい、廃盤・品切れ・高騰している": "Yes: out of print, sold out, or overpriced",
   "Amazonや楽天で検索して、新品が買えるか確かめてください。価格・在庫の自動取得は行いません。": "Search Amazon or Rakuten to see whether new copies are available. Prices and stock are not fetched automatically.",
   "入手状況を調べる": "Check availability",
   "入手状況を調べる（広告）": "Check availability (ads)",
