@@ -14,7 +14,7 @@ test("X share pairs each verdict with its Japanese phrase", () => {
   };
 
   for (const [result, japanese] of Object.entries(phrases) as [ResultId, string][]) {
-    const intent = new URL(shareUrl({ title: "Film", price: null }, { result, metrics, reason: "test" }, ["Copy"], "https://example.com/disc-or-die"));
+    const intent = new URL(shareUrl({ title: "Film", price: null }, { result, metrics, reason: "test" }, ["Copy"], "https://discordie.swaptv.tokyo"));
     assert.equal(intent.searchParams.get("text")?.split("\n")[0], `DISC OR DIE says: ${result} / ${japanese} 💀`);
   }
 });
@@ -22,16 +22,16 @@ test("X share pairs each verdict with its Japanese phrase", () => {
 test("shared links retain the selected language with and without a poster", () => {
   for (const locale of ["en", "ja"] as const) {
     for (const tmdb of [undefined, { id: 1, title: "Film", originalTitle: "Film", releaseYear: null, posterPath: "/poster.jpg" }]) {
-      const intent = new URL(shareUrl({ title: "Film", price: null, tmdb }, { result: "WAIT", metrics, reason: "test" }, ["Wait"], "https://example.com/disc-or-die", locale));
+      const intent = new URL(shareUrl({ title: "Film", price: null, tmdb }, { result: "WAIT", metrics, reason: "test" }, ["Wait"], "https://discordie.swaptv.tokyo", locale));
       assert.equal(new URL(intent.searchParams.get("url")!).searchParams.get("lang"), locale);
     }
   }
 });
 
 test("X share uses a movie-specific card URL when a poster exists", () => {
-  const intent = new URL(shareUrl({ title: "怪談", price: null, tmdb: { id: 1, title: "怪談", originalTitle: "Kwaidan", releaseYear: "1964", posterPath: "/poster.jpg" } }, { result: "BUY IT", metrics, reason: "test" }, ["買おう"], "https://example.com/disc-or-die?old=1#result"));
+  const intent = new URL(shareUrl({ title: "怪談", price: null, tmdb: { id: 1, title: "怪談", originalTitle: "Kwaidan", releaseYear: "1964", posterPath: "/poster.jpg" } }, { result: "BUY IT", metrics, reason: "test" }, ["買おう"], "https://discordie.swaptv.tokyo?old=1#result"));
   const card = new URL(intent.searchParams.get("url")!);
-  assert.equal(card.pathname, "/disc-or-die/share");
+  assert.equal(card.pathname, "/share");
   assert.equal(card.searchParams.get("title"), "怪談");
   assert.equal(card.searchParams.get("result"), "BUY IT");
   assert.equal(card.searchParams.get("poster"), "/poster.jpg");
@@ -43,9 +43,9 @@ test("X share uses a movie-specific card URL when a poster exists", () => {
 });
 
 test("X share without a poster still uses the result page", () => {
-  const intent = new URL(shareUrl({ title: "手入力", price: null }, { result: "WAIT", metrics, reason: "test" }, ["待とう"], "https://example.com/disc-or-die?old=1#result"));
+  const intent = new URL(shareUrl({ title: "手入力", price: null }, { result: "WAIT", metrics, reason: "test" }, ["待とう"], "https://discordie.swaptv.tokyo?old=1#result"));
   const card = new URL(intent.searchParams.get("url")!);
-  assert.equal(card.pathname, "/disc-or-die/share");
+  assert.equal(card.pathname, "/share");
   assert.equal(card.searchParams.get("title"), "手入力");
   assert.equal(card.searchParams.has("poster"), false);
   assert.equal(card.searchParams.get("love"), "75");
