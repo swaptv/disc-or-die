@@ -3,6 +3,8 @@ import type { MovieMatch, ProviderKind, WatchAvailability, WatchProvider } from 
 function object(value: unknown): Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 }
+// TMDB image paths (posters, provider logos): only "/name.ext" is kept; anything else becomes null.
+const imagePath = (value: unknown) => typeof value === "string" && /^\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(value) ? value : null;
 const positiveId = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value > 0;
 
 function movieMatch(entry: unknown): MovieMatch | null {
@@ -13,7 +15,7 @@ function movieMatch(entry: unknown): MovieMatch | null {
     title: movie.title,
     originalTitle: typeof movie.original_title === "string" ? movie.original_title : movie.title,
     releaseYear: typeof movie.release_date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(movie.release_date) ? movie.release_date.slice(0, 4) : null,
-    posterPath: typeof movie.poster_path === "string" && /^\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(movie.poster_path) ? movie.poster_path : null,
+    posterPath: imagePath(movie.poster_path),
   };
 }
 
@@ -42,7 +44,7 @@ export function parseProviders(value: unknown, movieId: number, now = new Date()
     for (const entry of entries) {
       const provider = object(entry);
       if (positiveId(provider.provider_id) && typeof provider.provider_name === "string" && provider.provider_name.trim()) {
-        unique.set(provider.provider_id, { id: provider.provider_id, name: provider.provider_name });
+        unique.set(provider.provider_id, { id: provider.provider_id, name: provider.provider_name, logoPath: imagePath(provider.logo_path) });
       }
     }
     return unique.size ? [{ kind, providers: [...unique.values()] }] : [];

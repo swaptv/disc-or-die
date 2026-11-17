@@ -126,3 +126,12 @@ test("handed-over movie is fetched by id from TMDB; bad ids, mismatches and fail
   assert.equal(await fetchMovie("603", "ja", { token: "t", fetcher: async () => new Response("", { status: 404 }) }), null);
   assert.equal(await fetchMovie("603", "ja", { token: "t", fetcher: async () => { throw new Error("down"); } }), null);
 });
+
+test("provider logos keep only safe TMDB image paths", () => {
+  const data = parseProviders({ results: { JP: { flatrate: [
+    { provider_id: 8, provider_name: "Netflix", logo_path: "/netflix.jpg" },
+    { provider_id: 9, provider_name: "Prime Video", logo_path: "https://example.com/x.jpg" },
+    { provider_id: 10, provider_name: "U-NEXT" },
+  ] } } }, 1);
+  assert.deepEqual(data.groups[0].providers.map(p => p.logoPath), ["/netflix.jpg", null, null]);
+});

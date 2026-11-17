@@ -13,7 +13,7 @@ export function MovieForm({ initial, shops, onSubmit, onBack }: { initial: Movie
   const [error, setError] = useState("");
   // Shop links only once the movie is settled: picked from TMDB, or the title the quiz already used.
   const shopTitle = selected?.title ?? (initial.title && title.trim() === initial.title ? initial.title : "");
-  return <section className="flow-panel"><p className="eyebrow">BEFORE THE INTERROGATION</p><h1 className="section-title">WHAT’S ON<br />YOUR MIND<span className="red">?</span></h1><p className="intro">{t("その一本、まずは名前を聞かせてください。")}</p>
+  return <section className="flow-panel"><h1 className="section-title">WHAT’S ON<br />YOUR MIND<span className="red">?</span></h1><p className="intro">{t("その一本、まずは名前を聞かせてください。")}</p>
     <p className="fine-print">{t("配信情報・購入先は日本向けです。価格は日本円（JPY）で入力してください。")}</p>
     <form onSubmit={e => { e.preventDefault(); const amount = price === "" ? null : Number(price); if (!title.trim()) { setError("作品タイトルを入力してください。"); return; } if (amount !== null && (!Number.isSafeInteger(amount) || amount < 0)) { setError("価格は0以上の整数で入力してください。"); return; } setError(""); onSubmit({ title: title.trim(), price: amount, ...(selected ? { tmdb: selected } : {}) }); }}>
       <MovieSearch key={locale} title={title} selected={selected} onChange={value => { setTitle(value); setSelected(undefined); }} onSelect={value => { setTitle(value.title); setSelected(value); }} />
